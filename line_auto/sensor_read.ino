@@ -1,6 +1,10 @@
+#include <EEPROM.h>
+
 int analog_value[sensor_num];
 int digital_value[sensor_num];
 float line_angle;
+
+int LINE_THRESHOLD[16];
 
 int green_sensor_num;
 
@@ -71,14 +75,14 @@ int sensor_cal() {//16で作るので32だとだめかもしれない
 
     //-------------------------
 
-    Serial.println();
+    //    Serial.println();
 
-    for (int i = 0; i < green_sensor_num; i++) {
-      Serial.print(cont_num[i][0]);
-      Serial.print(" ");
-      Serial.print(cont_num[i][1]);
-      Serial.print("  ");
-    }
+    //    for (int i = 0; i < green_sensor_num; i++) {
+    //      Serial.print(cont_num[i][0]);
+    //      Serial.print(" ");
+    //      Serial.print(cont_num[i][1]);
+    //      Serial.print("  ");
+    //    }
 
     int best_cout = -1;
     int best_cout_id = -1;
@@ -89,17 +93,17 @@ int sensor_cal() {//16で作るので32だとだめかもしれない
         best_cout_id = i;
       }
     }
-    Serial.println();
-    Serial.print(best_cout );
-    Serial.print( " ");
-    Serial.print(best_cout_id);
+    //    Serial.println();
+    //    Serial.print(best_cout );
+    //    Serial.print( " ");
+    //    Serial.print(best_cout_id);
 
     line_angle = (cont_num[best_cout_id][0] + (cont_num[best_cout_id][1] / 2)) * 22.5;
     if (line_angle > 360.00) {
       line_angle -= 360;
     }
-    Serial.print( " ");
-    Serial.print(line_angle);
+    //    Serial.print( " ");
+    //    Serial.print(line_angle);
 
 
 
@@ -108,7 +112,7 @@ int sensor_cal() {//16で作るので32だとだめかもしれない
     line_angle = 0;
   }
 
-  Serial.println();
+  //  Serial.println();
 
 }
 
@@ -138,7 +142,7 @@ void debug() {
 void sensor_convert() {
   green_sensor_num = 0;
   for (int id = 0; id < sensor_num; id++) {
-    if (analog_value[id] >= C_line_threshold) {
+    if (analog_value[id] >=  LINE_THRESHOLD[id]) {
       digital_value[id] = 1;
     } else {
       digital_value[id] = 0;
@@ -154,6 +158,11 @@ void sensor_setup() {
   for (int id = 0; id < 4; id++) {
     pinMode(READ_PIN[id], INPUT);
   }
+  for (int i = 0; i < 16; i++) {
+    LINE_THRESHOLD[i] = EEP_READ(i);
+  }
+
+
 }
 
 
@@ -296,7 +305,13 @@ void auto_threshould() {
     F_time_read();
   }
 
-  
+  for (int i = 0; i < 16; i++) {
+    THRESHOULD[i] = analog_min[i] + ((analog_max[i] - analog_min[i]) / 3 * 2);
+  }
+
+
+
+
   Serial.println("------------------");
   Serial.println("");
   Serial.print("num :");
@@ -307,8 +322,87 @@ void auto_threshould() {
     Serial.print(analog_max[i]);
     Serial.print(" min :");
     Serial.print(analog_min[i]);
+    Serial.print(" thr :");
+    Serial.print(THRESHOULD[i]);
+
+    EEP_WRITE(i, THRESHOULD[i]);
+
     Serial.println();
   }
   Serial.println("");
   Serial.println("------------------");
+}
+
+void EEP_WRITE(int id, int num) {
+  if (id == 0) {
+    EEPROM.put(0x000, num);
+  } else if (id == 1) {
+    EEPROM.put(0x002, num);
+  } else if (id == 2) {
+    EEPROM.put(0x004, num);
+  } else if (id == 3) {
+    EEPROM.put(0x006, num);
+  } else if (id == 4) {
+    EEPROM.put(0x008, num);
+  } else if (id == 5) {
+    EEPROM.put(0x00A, num);
+  } else if (id == 6) {
+    EEPROM.put(0x00C, num);
+  } else if (id == 7) {
+    EEPROM.put(0x00E, num);
+  } else if (id == 8) {
+    EEPROM.put(0x010, num);
+  } else if (id == 9) {
+    EEPROM.put(0x012, num);
+  } else if (id == 10) {
+    EEPROM.put(0x014, num);
+  } else if (id == 11) {
+    EEPROM.put(0x016, num);
+  } else if (id == 12) {
+    EEPROM.put(0x018, num);
+  } else if (id == 13) {
+    EEPROM.put(0x01A, num);
+  } else if (id == 14) {
+    EEPROM.put(0x01C, num);
+  } else if (id == 15) {
+    EEPROM.put(0x01E, num);
+  }
+}
+
+int EEP_READ(int id) {
+  int myreturn;
+  if (id == 0) {
+    EEPROM.get(0x000, myreturn);
+  } else if (id == 1) {
+    EEPROM.get(0x002, myreturn);
+  } else if (id == 2) {
+    EEPROM.get(0x004, myreturn);
+  } else if (id == 3) {
+    EEPROM.get(0x006, myreturn);
+  } else if (id == 4) {
+    EEPROM.get(0x008, myreturn);
+  } else if (id == 5) {
+    EEPROM.get(0x00A, myreturn);
+  } else if (id == 6) {
+    EEPROM.get(0x00C, myreturn);
+  } else if (id == 7) {
+    EEPROM.get(0x00E, myreturn);
+  } else if (id == 8) {
+    EEPROM.get(0x010, myreturn);
+  } else if (id == 9) {
+    EEPROM.get(0x012, myreturn);
+  } else if (id == 10) {
+    EEPROM.get(0x014, myreturn);
+  } else if (id == 11) {
+    EEPROM.get(0x016, myreturn);
+  } else if (id == 12) {
+    EEPROM.get(0x018, myreturn);
+  } else if (id == 13) {
+    EEPROM.get(0x01A, myreturn);
+  } else if (id == 14) {
+    EEPROM.get(0x01C, myreturn);
+  } else if (id == 15) {
+    EEPROM.get(0x01E, myreturn);
+  }
+  return myreturn;
 }

@@ -16,7 +16,8 @@ const int C_line_threshold = 250;
 void setup() {
   Serial.begin(115200);
   LINESer.begin(115200);
-  pinMode(10, OUTPUT); //ソフトシリアル頑張ってくれ、、
+  pinMode(10, INPUT); //ソフトシリアル頑張ってくれ、、
+  //  pinMode(11)
 
   sensor_setup();
   FullLED_setup();
@@ -24,7 +25,18 @@ void setup() {
     FullLED_loop(r, 150 - r, 0);
     delay(5);
   }
-  auto_threshould();
+  FullLED_loop(255, 1, 1);
+
+
+  //
+  //  auto_threshould();
+
+
+  for (int i = 0; i < 16; i++) {
+    Serial.print(i);
+    Serial.print(" ");
+    Serial.println(EEP_READ(i));
+  }
 }
 
 int pre_GET_angle;
@@ -32,12 +44,40 @@ int GET_angle;
 unsigned long line_time;
 
 void loop() {
+//  while (LINESer.available() > 5) {
+//    int g = LINESer.read();
+//  }
+  if (LINESer.available() > 0) {
+    if (LINESer.read() == 100) {
+      for (int g = 0; g < 10; g++) {
+        FullLED_loop(1, 255, 200);
+        delay(150);
+        FullLED_loop(0, 0, 0);
+        delay(150);
+      }
+
+      FullLED_loop(255, 1, 1);
+      auto_threshould();
+
+      for (int g = 0; g < 10; g++) {
+        FullLED_loop(255, 200, 0);
+        delay(150);
+        FullLED_loop(0, 0, 0);
+        delay(150);
+      }
+      while (LINESer.available() > 0) {
+        int g = LINESer.read();
+      }
+    }
+  }
+
+
   FullLED_loop(255, 1, 1);
 
   sensor_read(); //まずは読み込むよ！
   sensor_convert(); // デジタルに変換するよ！
   debug(); // デバッグ用に出力
-  Serial.println("");
+  //  Serial.println("");
 
 
   sensor_cal(); //
@@ -47,17 +87,10 @@ void loop() {
 
 
 
-  Serial.println("");
-  Serial.println("--------------------------------------------");
-  Serial.println("");
+  //  Serial.println("");
+  //  Serial.println("--------------------------------------------");
+  //  Serial.println("");
 
-  // ラインが見えなくなっても一定時間は進もう！！
-//  if (GET_angle != 0) {
-//    line_time = F_time_goal(100);
-//  }
-//  if (GET_angle == 0 && line_time > F_time_get()) {
-//    GET_angle = pre_GET_angle;
-//  }
   LINESer.write(GET_angle / 2);
   LINESer.flush();
 
@@ -67,23 +100,4 @@ void loop() {
   Serial.println(GET_angle);
   Serial.println();
 
-
-
-
-  //  int pre_range[2];
-  //  pre_range[0] = pre_GET_angle + 110;
-  //  pre_range[1] = pre_GET_angle + 250;
-  //  for (int i; i < 2; i++) {
-  //    if (pre_range[i] > 360) {
-  //      pre_range[i] -= 360;
-  //    }
-  //    Serial.print("aaa");
-  //    Serial.print(pre_range[i]);
-  //  }
-  //
-  //  pre_GET_angle = GET_angle;
-  //
-  //
-  //  LINESer.write(GET_angle / 2);
-  //  LINESer.flush();
 }

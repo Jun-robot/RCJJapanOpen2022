@@ -62,7 +62,7 @@ int F_KICCER_judge_V2() {
   }
   
   if (best_value < 500 && kick_judge_time == 0) {
-    kick_judge_time = F_time_goal(30);
+    kick_judge_time = F_time_goal(100);
   } 
   if (best_value >= 500){
     kick_judge_time = 0;

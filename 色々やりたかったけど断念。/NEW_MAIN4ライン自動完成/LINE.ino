@@ -1,14 +1,11 @@
 int LINE_receive;
 int pre_LINE_receive;
 
-//bool isOut = 0;//  外にいるとき1にする
-
 void F_LINE_setup() {
   Serial1.begin(115200);
 }
 
 void F_LINE_read() {
-  
 
   while (Serial1.available() > 5) {
     int g = Serial1.read();
@@ -22,15 +19,12 @@ void F_LINE_read() {
   if (pre_LINE_receive != 0 && LINE_receive != 0) {
     if (range_check(pre_LINE_receive + 110, pre_LINE_receive + 250, LINE_receive)) {
       LINE_receive += 180;
-//      isOut = !isOut;
       if(LINE_receive > 360){
         LINE_receive -= 360; 
       }
+//      Serial.print("                ");
     }
   }
-//  Serial.print("  ");
-//  Serial.print(isOut);
-//  Serial.print("  ");
   if(LINE_receive == 360){
     LINE_receive = 359;
   }
@@ -55,7 +49,7 @@ void F_LINE_threshold(){
   Serial1.write(100);
   delay(1);
   Serial1.write(100);
-  F_BUZ_DarthVader();
+  delay(10000);
 
 
   

@@ -11,7 +11,7 @@ const int CHOICE_PIN[] = {2, 3, 4};
 const int READ_PIN[] = {A0, A1, A2, A3};
 
 const int sensor_num = 16; //16or32
-const int C_line_threshold = 250;
+const int C_line_threshold = 400;
 
 void setup() {
   Serial.begin(115200);
