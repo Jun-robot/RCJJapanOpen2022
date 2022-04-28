@@ -77,10 +77,10 @@ void loop() {
     //    Serial.print(",");
   }
 
-  //  Serial.print(" id:");
-  //  Serial.print(best_id);
-  //  Serial.print(" dur:");
-  //  Serial.print(best_duration);
+//    Serial.print(" id:");
+//    Serial.print(best_id);
+//    Serial.print(" dur:");
+//    Serial.print(best_duration);
 
   if (best_duration > 0) {
     //ボールがあったとき
@@ -150,6 +150,16 @@ void loop() {
   //    distance = (distance * 0.9) + (pre_distance * 0.1);
   //  }
 
+
+  //ちょっと小細工
+  if(best_id == 15 || best_id == 0 || best_id == 1){
+    if(degree < 50){
+      degree - constrain(degree,1,30);
+    }else if(degree > 310){
+      degree - constrain(degree,330,360);
+    }
+  }
+
   //カメラ
   while (Serial1.available() > 5) {
     byte aa = Serial1.read();
@@ -162,12 +172,12 @@ void loop() {
   uint8_t deg = degree / 1.5;
   uint8_t dis = distance;
 
-    Serial.print(" deg:");
-    Serial.print(degree);
-    Serial.print(" dis:");
-    Serial.print(distance);
-    Serial.print(" cam:");
-    Serial.print(cameraData);
+//    Serial.print(" deg:");
+//    Serial.print(degree);
+//    Serial.print(" dis:");
+//    Serial.print(distance);
+//    Serial.print(" cam:");
+//    Serial.print(cameraData);
 
   IRSerial.write(255); //header
   IRSerial.write(deg);

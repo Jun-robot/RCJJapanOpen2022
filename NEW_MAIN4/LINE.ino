@@ -7,8 +7,10 @@ void F_LINE_setup() {
   Serial1.begin(115200);
 }
 
+unsigned long line_force_time = 0;
+
 void F_LINE_read() {
-  
+
 
   while (Serial1.available() > 5) {
     int g = Serial1.read();
@@ -22,18 +24,16 @@ void F_LINE_read() {
   if (pre_LINE_receive != 0 && LINE_receive != 0) {
     if (range_check(pre_LINE_receive + 110, pre_LINE_receive + 250, LINE_receive)) {
       LINE_receive += 180;
-//      isOut = !isOut;
-      if(LINE_receive > 360){
-        LINE_receive -= 360; 
+      if (LINE_receive > 360) {
+        LINE_receive -= 360;
       }
     }
-  }
-//  Serial.print("  ");
-//  Serial.print(isOut);
-//  Serial.print("  ");
-  if(LINE_receive == 360){
+}
+  
+  if (LINE_receive == 360) {
     LINE_receive = 359;
   }
+
   pre_LINE_receive = LINE_receive;
 }
 
@@ -49,7 +49,7 @@ void F_LINE_debug() {
 }
 
 
-void F_LINE_threshold(){
+void F_LINE_threshold() {
   Serial1.write(100);
   delay(1);
   Serial1.write(100);
@@ -58,5 +58,5 @@ void F_LINE_threshold(){
   F_BUZ_DarthVader();
 
 
-  
+
 }

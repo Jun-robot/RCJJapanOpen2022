@@ -14,7 +14,7 @@ const int sensor_num = 16; //16or32
 const int C_line_threshold = 250;
 
 void setup() {
-  Serial.begin(115200);
+//  Serial.begin(115200);
   LINESer.begin(115200);
   pinMode(10, INPUT); //ソフトシリアル頑張ってくれ、、
   //  pinMode(11)
