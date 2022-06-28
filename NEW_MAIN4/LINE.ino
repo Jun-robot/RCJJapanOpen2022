@@ -28,8 +28,8 @@ void F_LINE_read() {
         LINE_receive -= 360;
       }
     }
-}
-  
+  }
+
   if (LINE_receive == 360) {
     LINE_receive = 359;
   }
@@ -37,6 +37,17 @@ void F_LINE_read() {
   pre_LINE_receive = LINE_receive;
 }
 
+void F_LINE_read_block() {
+  while (Serial1.available() > 5) {
+    int g = Serial1.read();
+  }
+  if (Serial1.available() > 0) {
+    LINE_receive = Serial1.read() * 2;
+    if (LINE_receive > 0) {
+      LINE_receive = F_360_correct(LINE_receive);
+    }
+  }
+}
 
 
 int F_LINE_get() {

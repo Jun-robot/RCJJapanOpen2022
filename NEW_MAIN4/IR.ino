@@ -25,13 +25,13 @@ modoru:
     uint8_t dis = Serial3.read();
     uint8_t cam = Serial3.read();
 
-        Serial.print("   ");
-        Serial.print(deg);
-        Serial.print(" ");
-        Serial.print(dis);
-        Serial.print(" ");
-        Serial.print(cam);
-        Serial.print("  ");
+//        Serial.print("   ");
+//        Serial.print(deg);
+//        Serial.print(" ");
+//        Serial.print(dis);
+//        Serial.print(" ");
+//        Serial.print(cam);
+//        Serial.print("  ");
 
     //----------------------------
     if (deg != 255) {

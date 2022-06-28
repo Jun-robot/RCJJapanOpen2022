@@ -306,7 +306,7 @@ void auto_threshould() {
   }
 
   for (int i = 0; i < 16; i++) {
-    THRESHOULD[i] = analog_min[i] + ((analog_max[i] - analog_min[i]) / 3 * 1);
+    THRESHOULD[i] = analog_min[i] + ((analog_max[i] - analog_min[i]) / 3 * 2);
   }
 
 

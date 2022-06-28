@@ -1,8 +1,8 @@
 // 1,2
-#define Gyro_X 29
-#define Gyro_Y 18
-#define Gyro_Z -101
-#define Accel_Z 4997
+#define Gyro_X 34
+#define Gyro_Y 19
+#define Gyro_Z -107
+#define Accel_Z 5002
 
 ////3,4
 //#define Gyro_X 83
