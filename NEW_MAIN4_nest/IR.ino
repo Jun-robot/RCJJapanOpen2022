@@ -75,7 +75,7 @@ int F_IR_wrap_around(int IR) {
   } else if (IR_distance == 1 || IR_distance == 2) {
     IR_wrap_degree = F_IR_mawarikomi(IR, 65);
   } else if (IR_distance == 3) {
-    IR_wrap_degree = F_IR_mawarikomi_mae(IR, 35);
+    IR_wrap_degree = F_IR_mawarikomi_mae(IR, 5);
   }
   return IR_wrap_degree;
 }
@@ -89,11 +89,11 @@ int F_IR_mawarikomi(int IR, int leng) {
   //回り込み
   if (IR == 0) {
     result = 0;
-  } else if ((25 >= IR || IR >= 335) ) {
+  } else if ((20 >= IR || IR >= 340) ) {
     result = 360;
   } else if ((25 <= IR && IR <= 25) ) {
     result = 5;
-  } else if ((25 <= IR && IR <= 70) ) {
+  } else if ((20 <= IR && IR <= 70) ) {
     result = IR + 70;
 
   } else if (70 <= IR && IR <= 180) {
@@ -102,7 +102,7 @@ int F_IR_mawarikomi(int IR, int leng) {
   } else if ( 180 <= IR && IR <= 290 ) {
     result = IR - C_IR_length;
 
-  } else if ((290 <= IR && IR <= 335) ) {
+  } else if ((290 <= IR && IR <= 340) ) {
     result = IR - 70;
 
   } else if ( 335 <= IR && IR <= 335 ) {
